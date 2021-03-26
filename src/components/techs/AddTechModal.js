@@ -1,20 +1,28 @@
 import React, { useState } from 'react'
 import M from 'materialize-css/dist/js/materialize.min.js';
+import { connect } from 'react-redux';
+import { addTech } from '../../actions/techActions';
 
-
-const EditLogModal = () => {
-    const [firstName, setFirstName] = useState('');
-    const [lastName, setLastName] = useState('');
+const EditLogModal = ({ addTech }) => {
+    const [technician, setTechnician] = useState({
+        firstName: '',
+        lastName: ''
+    });
 
     const onSubmit = () => {
-        if (firstName === '' || lastName === '') {
+        if (technician.firstName === '' || technician.lastName === '') {
             M.toast({ html: 'Please enter the first and last name' })
         } else {
-            console.log(firstName, lastName);
+
+            addTech(technician);
+
+            M.toast({ html: `Added new tech ${technician.firstName} ${technician.lastName}` });
 
             // Clear Fields
-            setFirstName('');
-            setLastName('');
+            setTechnician({
+                firstName: '',
+                lastName: ''
+            });
         }
     }
 
@@ -25,7 +33,7 @@ const EditLogModal = () => {
 
                 <div className="row">
                     <div className="input-field">
-                        <input name="firstName" type="text" onChange={(e) => setFirstName(e.target.value)} />
+                        <input name="firstName" type="text" value={technician.firstName} onChange={(e) => setTechnician({ ...technician, firstName: e.target.value })} />
                         <label htmlFor="firstName" className="active">
                             First Name
                         </label>
@@ -34,7 +42,7 @@ const EditLogModal = () => {
 
                 <div className="row">
                     <div className="input-field">
-                        <input name="lastName" type="text" onChange={(e) => setLastName(e.target.value)} />
+                        <input name="lastName" type="text" value={technician.lastName} onChange={(e) => setTechnician({ ...technician, lastName: e.target.value })} />
                         <label htmlFor="lastName" className="active">
                             Last Name
                         </label>
@@ -50,6 +58,6 @@ const EditLogModal = () => {
     )
 }
 
-export default EditLogModal;
+export default connect(null, { addTech })(EditLogModal);
 
 

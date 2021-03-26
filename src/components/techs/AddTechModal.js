@@ -1,20 +1,20 @@
-import React, { useRef, useState } from 'react'
+import React, { useState } from 'react'
 import M from 'materialize-css/dist/js/materialize.min.js';
 
 
 const EditLogModal = () => {
-    const firstName = useRef('');
-    const lastName = useRef('');
+    const [firstName, setFirstName] = useState('');
+    const [lastName, setLastName] = useState('');
 
     const onSubmit = () => {
-        if (firstName.current.value === '' || lastName === '') {
+        if (firstName === '' || lastName === '') {
             M.toast({ html: 'Please enter the first and last name' })
         } else {
-            console.log(firstName.current.value, lastName.current.value);
+            console.log(firstName, lastName);
 
             // Clear Fields
-            lastName.current.value = '';
-            firstName.current.value = '';
+            setFirstName('');
+            setLastName('');
         }
     }
 
@@ -25,7 +25,7 @@ const EditLogModal = () => {
 
                 <div className="row">
                     <div className="input-field">
-                        <input name="firstName" type="text" ref={firstName} />
+                        <input name="firstName" type="text" onChange={(e) => setFirstName(e.target.value)} />
                         <label htmlFor="firstName" className="active">
                             First Name
                         </label>
@@ -34,7 +34,7 @@ const EditLogModal = () => {
 
                 <div className="row">
                     <div className="input-field">
-                        <input name="lastName" type="text" ref={lastName} />
+                        <input name="lastName" type="text" onChange={(e) => setLastName(e.target.value)} />
                         <label htmlFor="lastName" className="active">
                             Last Name
                         </label>

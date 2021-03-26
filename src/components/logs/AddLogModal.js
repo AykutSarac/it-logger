@@ -1,18 +1,34 @@
-import React, { useRef, useState } from 'react'
+import React, { useState } from 'react'
 import M from 'materialize-css/dist/js/materialize.min.js';
+import { connect } from 'react-redux'
+import { addLog } from '../../actions/logActions'
 
-
-const AddLogModal = () => {
-    const message = useRef('');
+const AddLogModal = ({ addLog }) => {
+    const [message, setMessage] = useState('');
     const [attention, setAttention] = useState(false);
     const [tech, setTech] = useState('');
 
     const onSubmit = () => {
-        if (message.current.value === '' || tech === '') {
+        if (message === '' || tech === '') {
             M.toast({ html: 'Please enter a message and tech' })
         } else {
-            console.log(message.current.value, tech, attention);
-            message.current.value = '';
+
+            const newLog = {
+                message,
+                tech,
+                attention,
+                date: new Date()
+            }
+
+            addLog(newLog);
+
+            M.toast({ html: `Log added by ${tech}` });
+
+            // Clear Fields
+            setMessage('');
+            setTech('');
+            setAttention(false);
+
         }
     }
 
@@ -22,7 +38,7 @@ const AddLogModal = () => {
                 <h4>Enter System Log</h4>
                 <div className="row">
                     <div className="input-field">
-                        <input name="message" type="text" ref={message} />
+                        <input name="message" type="text" value={message} onChange={(e) => setMessage(e.target.value)} />
                         <label htmlFor="message" className="active">
                             Log Message
                         </label>
@@ -46,7 +62,7 @@ const AddLogModal = () => {
                     <div className="input-field">
                         <p>
                             <label>
-                                <input type="checkbox" className="filled-in" value={attention} ref={(e) => setAttention(attention)} />
+                                <input type="checkbox" className="filled-in" checked={attention} onChange={(e) => setAttention(e.target.checked)} />
                                 <span>Needs Attention</span>
                             </label>
                         </p>
@@ -65,6 +81,10 @@ const modalStyle = {
     height: '75%'
 }
 
-export default AddLogModal
+const mapStateToProps = (state) => ({
+    log: state.log
+})
+
+export default connect(mapStateToProps, { addLog })(AddLogModal);
 
 

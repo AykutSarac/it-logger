@@ -7,5 +7,6 @@ Add - Update - Delete system logs & assign/update/create techs.
 - Redux for state managment
 - Material UI
 
-## Additional Info
-This is project is made parallel with Udemy course [React Front to Back](https://www.udemy.com/course/modern-react-front-to-back/).
+## Installing
+- Run `npm install`
+- Start project with `npm run dev`
